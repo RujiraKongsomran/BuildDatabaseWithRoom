@@ -1,8 +1,11 @@
 package com.rujirakongsomran.builddatabasewithroom;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -130,5 +133,51 @@ public class MainActivity extends AppCompatActivity {
         userList.clear();
         userList.addAll(users);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_clear:
+                deleteAllUsers();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteAllUsers() {
+
+        Disposable disposable = io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                userRepository.deleteAllUsers();
+                emitter.onComplete();
+            }
+        })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer() {
+                               @Override
+                               public void accept(Object o) throws Exception {
+
+                               }
+                           }, new Consumer<Throwable>() {
+                               @Override
+                               public void accept(Throwable throwable) throws Exception {
+                                   Toast.makeText(MainActivity.this, "" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                               }
+                           }, new Action() {
+                               @Override
+                               public void run() throws Exception {
+                                   loadData(); // Refresh data
+                               }
+                           }
+                );
     }
 }
