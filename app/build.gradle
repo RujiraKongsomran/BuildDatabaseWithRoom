@@ -41,4 +41,7 @@ dependencies {
     // RxJava
     implementation "io.reactivex.rxjava3:rxjava:3.0.0"
 
+    // Floating Action Button
+    implementation 'com.google.android.material:material:1.2.0-beta01'
+
 }
