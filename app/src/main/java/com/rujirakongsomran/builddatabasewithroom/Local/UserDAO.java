@@ -1,5 +1,6 @@
 package com.rujirakongsomran.builddatabasewithroom.Local;
 
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 
+@Dao
 public interface UserDAO {
     @Query("SELECT * FROM users WHERE id=:userId")
     Flowable<User> getUserById(int userId);

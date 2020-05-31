@@ -17,7 +17,7 @@
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/lvUser"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>
